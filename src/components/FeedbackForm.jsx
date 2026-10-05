@@ -86,6 +86,7 @@ function FeedbackForm() {
   const validateMessage = (value) => {
     if (!value.trim()) return "Сообщение обязательно для заполнения";
     if (value.trim().length < 10) return "Минимум 10 символов";
+    if (value.length > 500) return "Максимум 500 символов";
     return null;
   };
 
@@ -262,10 +263,20 @@ function FeedbackForm() {
         <textarea
           className={getInputClass("message")}
           value={message}
+          maxLength={500}
           onChange={(e) => handleChange("message", e.target.value)}
           onBlur={() => handleBlur("message")}
         />
-        {touched.message && errors.message && <span className="field_error">{errors.message}</span>}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "4px" }}>
+          <div>
+            {touched.message && errors.message && (
+              <span className="field_error">{errors.message}</span>
+            )}
+          </div>
+          <span style={{ fontSize: "12px", color: "#667085" }}>
+            {message.length} / 500
+          </span>
+        </div>
       </div>
 
       <button type="submit" className="feedback-form_submit" disabled={isSubmitting}>
